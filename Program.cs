@@ -1,15 +1,29 @@
+using RagService.Services.Interfaces;
+using RagService.Services.Implementations;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ─────────────────────────────────────────────────────────────
+// 1.  Dependency-Injection registrations
+//    • Mock implementations for local dev
+//    • All three are singletons because they hold no per-request state
+// ─────────────────────────────────────────────────────────────
+builder.Services.AddSingleton<IEmbeddingService, MockEmbeddingService>();
+builder.Services.AddSingleton<IVectorSearchService, VectorSearchService>();
+builder.Services.AddSingleton<ILLMService, MockLLMService>();
 
+// ─────────────────────────────────────────────────────────────
+// 2.  MVC + Swagger boilerplate (unchanged)
+// ─────────────────────────────────────────────────────────────
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ─────────────────────────────────────────────────────────────
+// 3.  Middleware pipeline
+// ─────────────────────────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,7 +31,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

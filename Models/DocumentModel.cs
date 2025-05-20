@@ -1,4 +1,4 @@
-namespace RegService.Models
+namespace RagService.Models
 { 
 
      public class DocumentModel

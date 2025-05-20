@@ -1,4 +1,7 @@
-using RegService.Models;
+using RagService.Services.Interfaces;
+using RagService.Models;
+
+
 
 namespace RagService.Services.Interfaces
 {
